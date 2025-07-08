@@ -90,12 +90,11 @@ const Forms = () => {
   ]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center">
+    <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center">
       <LeftSide values={values} setValues={setValues} />
       <div className="col-span-full md:hidden w-full">
         <div className="divider"></div>
       </div>
-
       <div className="hidden md:flex divider divider-horizontal"></div>
       <RightSide values={values} setValues={setValues} />
     </div>
