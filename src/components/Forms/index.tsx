@@ -17,6 +17,7 @@ export interface FormsFields {
 }
 
 const PRINTER_POWER_KW = 0.35;
+const STORAGE_KEY = "forms-values";
 
 const Forms = () => {
   const [values, setValues] = useState<FormsFields>({
@@ -30,6 +31,19 @@ const Forms = () => {
     includeMachineCost: true,
     printValue: 0,
   });
+
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        setValues(JSON.parse(stored));
+      } catch {}
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+  }, [values]);
 
   useEffect(() => {
     const {

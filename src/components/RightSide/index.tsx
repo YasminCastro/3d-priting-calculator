@@ -50,7 +50,7 @@ const RightSide = ({ values, setValues }: IProps) => {
         </label>
       </fieldset>
       <div className="divider"></div>
-      <p className="font-bold text-xl">
+      <p className="font-bold text-xl w-80">
         Valor da impressão: R$ {values.printValue}
       </p>
     </div>
