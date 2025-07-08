@@ -21,8 +21,8 @@ const PRINTER_POWER_KW = 0.35;
 const Forms = () => {
   const [values, setValues] = useState<FormsFields>({
     filamentCost: 120,
-    kWhCost: 0.86,
-    machineCost: 1.55,
+    kWhCost: 0.66,
+    machineCost: 2,
     printWeight: 0,
     printTime: 0,
     includeFilament: true,

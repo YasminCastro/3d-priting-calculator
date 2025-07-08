@@ -5,7 +5,7 @@ export default function Home() {
     <div className="grid items-center justify-items-center min-h-screen gap-16">
       <main className="flex flex-col gap-[32px] row-start-2 items-center">
         <h1 className="text-4xl font-bold text-center">
-          3D Printing Calculator
+          Calculadora de Impressão 3D
         </h1>
         <Forms />
       </main>
