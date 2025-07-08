@@ -13,10 +13,14 @@ export interface FormsFields {
   includeFilament: boolean;
   includeEnergy: boolean;
   includeMachineCost: boolean;
+  includeFilamentWaste: boolean;
   printValue: number;
 }
 
+// Potência da impressora Ender 3 V3 KE em kW
 const PRINTER_POWER_KW = 0.35;
+// 5% de desperdício
+const FILAMENT_WASTE_FACTOR = 1.05;
 const STORAGE_KEY = "forms-values";
 
 const Forms = () => {
@@ -29,6 +33,7 @@ const Forms = () => {
     includeFilament: true,
     includeEnergy: true,
     includeMachineCost: true,
+    includeFilamentWaste: true,
     printValue: 0,
   });
 
@@ -55,11 +60,18 @@ const Forms = () => {
       includeFilament,
       includeEnergy,
       includeMachineCost,
+      includeFilamentWaste,
     } = values;
+
+    console.log(includeFilamentWaste);
+    // aplica desperdício só se o usuário quiser
+    const effectiveWeight = includeFilamentWaste
+      ? printWeight * FILAMENT_WASTE_FACTOR
+      : printWeight;
 
     // custo de filamento (R$/g)
     const weightCost = includeFilament
-      ? (filamentCost / 1000) * printWeight
+      ? (filamentCost / 1000) * effectiveWeight
       : 0;
 
     // custo de energia (kW × h × R$/kWh)
@@ -87,6 +99,7 @@ const Forms = () => {
     values.includeEnergy,
     values.machineCost,
     values.includeMachineCost,
+    values.includeFilamentWaste,
   ]);
 
   return (

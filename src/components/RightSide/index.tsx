@@ -49,6 +49,19 @@ const RightSide = ({ values, setValues }: IProps) => {
           Valor do custo máquina + manutenção
         </label>
       </fieldset>
+      <fieldset className="fieldset">
+        <label className="label">
+          <input
+            type="checkbox"
+            defaultChecked
+            className="checkbox"
+            onChange={({ target }) =>
+              setValues({ ...values, includeFilamentWaste: target.checked })
+            }
+          />
+          Descarte de filamento
+        </label>
+      </fieldset>
       <div className="divider"></div>
       <p className="font-bold text-xl md:w-80">
         Valor da impressão: R$ {values.printValue}
