@@ -46,7 +46,7 @@ const RightSide = ({ values, setValues }: IProps) => {
               setValues({ ...values, includeMachineCost: target.checked })
             }
           />
-          Valor do
+          Valor do custo máquina + manutenção
         </label>
       </fieldset>
       <fieldset className="fieldset">
