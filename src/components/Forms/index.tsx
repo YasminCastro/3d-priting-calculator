@@ -15,6 +15,8 @@ export interface FormsFields {
   includeMachineCost: boolean;
   includeFilamentWaste: boolean;
   printValue: number;
+  includeProfit: boolean;
+  profitPercentage: number;
 }
 
 // Potência da impressora Ender 3 V3 KE em kW
@@ -34,6 +36,8 @@ const Forms = () => {
     includeEnergy: true,
     includeMachineCost: true,
     includeFilamentWaste: true,
+    includeProfit: true,
+    profitPercentage: 30,
     printValue: 0,
   });
 
@@ -61,9 +65,10 @@ const Forms = () => {
       includeEnergy,
       includeMachineCost,
       includeFilamentWaste,
+      includeProfit,
+      profitPercentage,
     } = values;
 
-    console.log(includeFilamentWaste);
     // aplica desperdício só se o usuário quiser
     const effectiveWeight = includeFilamentWaste
       ? printWeight * FILAMENT_WASTE_FACTOR
@@ -84,7 +89,14 @@ const Forms = () => {
       ? machineCost * (printTime / 60)
       : 0;
 
-    const total = weightCost + energyCost + machineTimeCost;
+    const priceWithoutProfit = weightCost + energyCost + machineTimeCost;
+
+    // lucro
+    const profit = includeProfit
+      ? priceWithoutProfit * (profitPercentage / 100)
+      : 0;
+
+    const total = priceWithoutProfit + profit;
 
     setValues((prev) => ({
       ...prev,
@@ -100,10 +112,13 @@ const Forms = () => {
     values.machineCost,
     values.includeMachineCost,
     values.includeFilamentWaste,
+    values.profitPercentage,
+    values.includeProfit,
   ]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center">
+    // <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center">
+    <div className="flex gap-4 max-md:flex-col">
       <LeftSide values={values} setValues={setValues} />
       <div className="col-span-full md:hidden w-full">
         <div className="divider"></div>

@@ -46,7 +46,7 @@ const RightSide = ({ values, setValues }: IProps) => {
               setValues({ ...values, includeMachineCost: target.checked })
             }
           />
-          Valor do custo máquina + manutenção
+          Valor do
         </label>
       </fieldset>
       <fieldset className="fieldset">
@@ -60,6 +60,19 @@ const RightSide = ({ values, setValues }: IProps) => {
             }
           />
           Descarte de filamento
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <label className="label">
+          <input
+            type="checkbox"
+            defaultChecked
+            className="checkbox"
+            onChange={({ target }) =>
+              setValues({ ...values, includeProfit: target.checked })
+            }
+          />
+          Incluir lucro
         </label>
       </fieldset>
       <div className="divider"></div>

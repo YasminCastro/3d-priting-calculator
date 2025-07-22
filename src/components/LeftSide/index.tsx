@@ -9,39 +9,56 @@ interface IProps {
 const LeftSide = ({ values, setValues }: IProps) => {
   return (
     <div>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Valor do filamento</legend>
-        <input
-          type="number"
-          className="input"
-          defaultValue={values.filamentCost}
-          onChange={({ target }) =>
-            setValues({ ...values, filamentCost: target.valueAsNumber })
-          }
-        />
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Valor do kWh</legend>
-        <input
-          type="number"
-          className="input"
-          defaultValue={values.kWhCost}
-          onChange={({ target }) =>
-            setValues({ ...values, kWhCost: target.valueAsNumber })
-          }
-        />
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Custo máquina + manutenção</legend>
-        <input
-          type="number"
-          className="input"
-          defaultValue={values.machineCost}
-          onChange={({ target }) =>
-            setValues({ ...values, machineCost: target.valueAsNumber })
-          }
-        />
-      </fieldset>
+      <div className="flex gap-4">
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Valor do filamento</legend>
+          <input
+            type="number"
+            className="input"
+            defaultValue={values.filamentCost}
+            onChange={({ target }) =>
+              setValues({ ...values, filamentCost: target.valueAsNumber })
+            }
+          />
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Valor do kWh</legend>
+          <input
+            type="number"
+            className="input"
+            defaultValue={values.kWhCost}
+            onChange={({ target }) =>
+              setValues({ ...values, kWhCost: target.valueAsNumber })
+            }
+          />
+        </fieldset>
+      </div>
+      <div className="flex gap-4">
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">
+            Custo máquina + manutenção
+          </legend>
+          <input
+            type="number"
+            className="input"
+            defaultValue={values.machineCost}
+            onChange={({ target }) =>
+              setValues({ ...values, machineCost: target.valueAsNumber })
+            }
+          />
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Lucro (%)</legend>
+          <input
+            type="number"
+            className="input"
+            defaultValue={values.profitPercentage}
+            onChange={({ target }) =>
+              setValues({ ...values, profitPercentage: target.valueAsNumber })
+            }
+          />
+        </fieldset>
+      </div>
       <div className="divider"></div>
       <fieldset className="fieldset">
         <legend className="fieldset-legend">Peso da impressão em gramas</legend>
