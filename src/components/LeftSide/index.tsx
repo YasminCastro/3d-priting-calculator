@@ -7,81 +7,109 @@ interface IProps {
 }
 
 const LeftSide = ({ values, setValues }: IProps) => {
+  const handleNumberChange = (
+    field: keyof FormsFields,
+    value: number | string
+  ) => {
+    const numValue = typeof value === "string" ? parseFloat(value) || 0 : value;
+    const sanitizedValue = isNaN(numValue) || numValue < 0 ? 0 : numValue;
+    setValues({ ...values, [field]: sanitizedValue });
+  };
+
   return (
     <div>
       <div className="flex gap-4">
         <fieldset className="fieldset">
-          <legend className="fieldset-legend">Valor do filamento</legend>
+          <legend className="fieldset-legend">
+            Valor do filamento (R$/kg)
+          </legend>
           <input
             type="number"
+            min="0"
+            step="0.01"
             className="input"
-            defaultValue={values.filamentCost}
+            value={values.filamentCost || ""}
             onChange={({ target }) =>
-              setValues({ ...values, filamentCost: target.valueAsNumber })
+              handleNumberChange("filamentCost", target.value)
             }
+            aria-label="Valor do filamento por quilograma"
           />
         </fieldset>
         <fieldset className="fieldset">
-          <legend className="fieldset-legend">Valor do kWh</legend>
+          <legend className="fieldset-legend">Valor do kWh (R$)</legend>
           <input
             type="number"
+            min="0"
+            step="0.01"
             className="input"
-            defaultValue={values.kWhCost}
+            value={values.kWhCost || ""}
             onChange={({ target }) =>
-              setValues({ ...values, kWhCost: target.valueAsNumber })
+              handleNumberChange("kWhCost", target.value)
             }
+            aria-label="Valor do quilowatt-hora"
           />
         </fieldset>
       </div>
       <div className="flex gap-4">
         <fieldset className="fieldset">
           <legend className="fieldset-legend">
-            Custo máquina + manutenção
+            Custo máquina + manutenção (R$/h)
           </legend>
           <input
             type="number"
+            min="0"
+            step="0.01"
             className="input"
-            defaultValue={values.machineCost}
+            value={values.machineCost || ""}
             onChange={({ target }) =>
-              setValues({ ...values, machineCost: target.valueAsNumber })
+              handleNumberChange("machineCost", target.value)
             }
+            aria-label="Custo da máquina e manutenção por hora"
           />
         </fieldset>
-        <fieldset className="fieldset">
+        <fieldset className="fieldset flex-1">
           <legend className="fieldset-legend">Lucro (%)</legend>
           <input
             type="number"
+            min="0"
+            max="100"
+            step="0.1"
             className="input"
-            defaultValue={values.profitPercentage}
+            value={values.profitPercentage || ""}
             onChange={({ target }) =>
-              setValues({ ...values, profitPercentage: target.valueAsNumber })
+              handleNumberChange("profitPercentage", target.value)
             }
+            aria-label="Percentual de lucro"
           />
         </fieldset>
       </div>
       <div className="divider"></div>
       <fieldset className="fieldset">
-        <legend className="fieldset-legend">Peso da impressão em gramas</legend>
+        <legend className="fieldset-legend">Peso da impressão (g)</legend>
         <input
           type="number"
+          min="0"
+          step="0.1"
           className="input"
-          defaultValue={values.printWeight}
+          value={values.printWeight || ""}
           onChange={({ target }) =>
-            setValues({ ...values, printWeight: target.valueAsNumber })
+            handleNumberChange("printWeight", target.value)
           }
+          aria-label="Peso da impressão em gramas"
         />
       </fieldset>
       <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Tempo da impressão em minutos
-        </legend>
+        <legend className="fieldset-legend">Tempo da impressão (min)</legend>
         <input
           type="number"
+          min="0"
+          step="0.1"
           className="input"
-          defaultValue={values.printTime}
+          value={values.printTime || ""}
           onChange={({ target }) =>
-            setValues({ ...values, printTime: target.valueAsNumber })
+            handleNumberChange("printTime", target.value)
           }
+          aria-label="Tempo da impressão em minutos"
         />
       </fieldset>
     </div>

@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Calculadora de Impressão 3D
 
-## Getting Started
+Uma calculadora web para precificar impressões 3D, desenvolvida com Next.js, React e TypeScript. Esta ferramenta ajuda você a calcular o custo real de suas impressões 3D, considerando filamento, energia elétrica, custos de máquina e margem de lucro.
 
-First, run the development server:
+## 🚀 Funcionalidades
+
+- **Cálculo de custos de filamento**: Considera o peso da impressão e o custo do filamento por quilograma
+- **Cálculo de energia elétrica**: Calcula o consumo baseado na potência da impressora (Ender 3 V3 KE - 0.35kW)
+- **Custo de máquina e manutenção**: Inclui custos operacionais por hora
+- **Desperdício de filamento**: Opção para incluir 5% de desperdício no cálculo
+- **Margem de lucro**: Permite adicionar uma porcentagem de lucro ao preço final
+- **Persistência de dados**: Salva automaticamente suas configurações no navegador
+- **Interface responsiva**: Funciona perfeitamente em desktop e mobile
+
+## 🛠️ Tecnologias
+
+- [Next.js 15](https://nextjs.org/) - Framework React
+- [React 19](https://react.dev/) - Biblioteca UI
+- [TypeScript](https://www.typescriptlang.org/) - Tipagem estática
+- [Tailwind CSS](https://tailwindcss.com/) - Estilização
+- [DaisyUI](https://daisyui.com/) - Componentes UI
+
+## 📦 Instalação
+
+1. Clone o repositório:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <seu-repositorio>
+cd 3d-priting-calculator
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instale as dependências:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn install
+# ou
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Execute o servidor de desenvolvimento:
 
-## Learn More
+```bash
+yarn dev
+# ou
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Abra [http://localhost:3000](http://localhost:3000) no navegador
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💡 Como Usar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Configure os custos base**:
 
-## Deploy on Vercel
+   - Valor do filamento (R$/kg)
+   - Valor do kWh de energia elétrica
+   - Custo da máquina + manutenção (R$/h)
+   - Percentual de lucro desejado
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Informe os dados da impressão**:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   - Peso da impressão em gramas
+   - Tempo de impressão em minutos
+
+3. **Selecione o que incluir no cálculo**:
+   - Marque/desmarque os checkboxes para incluir ou excluir cada custo
+   - O valor final será calculado automaticamente
+
+## 📊 Fórmulas de Cálculo
+
+- **Custo de filamento**: `(Valor do filamento / 1000) × Peso efetivo`
+- **Custo de energia**: `0.35kW × (Tempo em horas) × Valor do kWh`
+- **Custo de máquina**: `Custo por hora × Tempo em horas`
+- **Preço sem lucro**: `Soma de todos os custos incluídos`
+- **Lucro**: `Preço sem lucro × (Percentual de lucro / 100)`
+- **Preço final**: `Preço sem lucro + Lucro`
+
+## 🎨 Personalização
+
+Os valores padrão podem ser ajustados no arquivo `src/components/Forms/index.tsx`:
+
+- `PRINTER_POWER_KW`: Potência da impressora em kW (padrão: 0.35)
+- `FILAMENT_WASTE_FACTOR`: Fator de desperdício (padrão: 1.05 = 5%)
+
+## 📝 Licença
+
+Este projeto é de uso pessoal.
+
+## 👤 Autor
+
+Yas Castro - [yascastro.com.br](https://www.yascastro.com.br)

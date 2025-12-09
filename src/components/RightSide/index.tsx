@@ -7,78 +7,99 @@ interface IProps {
 }
 
 const RightSide = ({ values, setValues }: IProps) => {
+  const formatCurrency = (value: number): string => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+  };
+
   return (
     <div>
       <label className="label">Incluir</label>
       <fieldset className="fieldset">
-        <label className="label">
+        <label className="label cursor-pointer">
           <input
             type="checkbox"
-            defaultChecked
+            checked={values.includeFilament}
             className="checkbox"
             onChange={({ target }) =>
               setValues({ ...values, includeFilament: target.checked })
             }
+            aria-label="Incluir valor do filamento no cálculo"
           />
-          Valor do filamento
+          <span className="label-text">Valor do filamento</span>
         </label>
       </fieldset>
       <fieldset className="fieldset">
-        <label className="label">
+        <label className="label cursor-pointer">
           <input
             type="checkbox"
-            defaultChecked
+            checked={values.includeEnergy}
             className="checkbox"
             onChange={({ target }) =>
               setValues({ ...values, includeEnergy: target.checked })
             }
+            aria-label="Incluir valor da energia no cálculo"
           />
-          Valor da energia (kWh)
+          <span className="label-text">Valor da energia (kWh)</span>
         </label>
       </fieldset>
       <fieldset className="fieldset">
-        <label className="label">
+        <label className="label cursor-pointer">
           <input
             type="checkbox"
-            defaultChecked
+            checked={values.includeMachineCost}
             className="checkbox"
             onChange={({ target }) =>
               setValues({ ...values, includeMachineCost: target.checked })
             }
+            aria-label="Incluir custo da máquina e manutenção no cálculo"
           />
-          Valor do custo máquina + manutenção
+          <span className="label-text">
+            Valor do custo máquina + manutenção
+          </span>
         </label>
       </fieldset>
       <fieldset className="fieldset">
-        <label className="label">
+        <label className="label cursor-pointer">
           <input
             type="checkbox"
-            defaultChecked
+            checked={values.includeFilamentWaste}
             className="checkbox"
             onChange={({ target }) =>
               setValues({ ...values, includeFilamentWaste: target.checked })
             }
+            aria-label="Incluir descarte de filamento no cálculo"
           />
-          Descarte de filamento
+          <span className="label-text">Descarte de filamento</span>
         </label>
       </fieldset>
       <fieldset className="fieldset">
-        <label className="label">
+        <label className="label cursor-pointer">
           <input
             type="checkbox"
-            defaultChecked
+            checked={values.includeProfit}
             className="checkbox"
             onChange={({ target }) =>
               setValues({ ...values, includeProfit: target.checked })
             }
+            aria-label="Incluir lucro no cálculo"
           />
-          Incluir lucro
+          <span className="label-text">Incluir lucro</span>
         </label>
       </fieldset>
       <div className="divider"></div>
-      <p className="font-bold text-xl md:w-80">
-        Valor da impressão: R$ {values.printValue}
-      </p>
+      <div className="card bg-base-200 p-4">
+        <p className="font-bold text-xl md:w-80">
+          Valor da impressão:{" "}
+          <span className="text-primary">
+            {formatCurrency(values.printValue)}
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LeftSide from "../LeftSide";
 import RightSide from "../RightSide";
 
@@ -25,36 +25,56 @@ const PRINTER_POWER_KW = 0.35;
 const FILAMENT_WASTE_FACTOR = 1.05;
 const STORAGE_KEY = "forms-values";
 
-const Forms = () => {
-  const [values, setValues] = useState<FormsFields>({
-    filamentCost: 120,
-    kWhCost: 0.66,
-    machineCost: 2,
-    printWeight: 0,
-    printTime: 0,
-    includeFilament: true,
-    includeEnergy: true,
-    includeMachineCost: true,
-    includeFilamentWaste: true,
-    includeProfit: true,
-    profitPercentage: 30,
-    printValue: 0,
-  });
+const defaultValues: FormsFields = {
+  filamentCost: 120,
+  kWhCost: 0.66,
+  machineCost: 2,
+  printWeight: 0,
+  printTime: 0,
+  includeFilament: true,
+  includeEnergy: true,
+  includeMachineCost: true,
+  includeFilamentWaste: true,
+  includeProfit: true,
+  profitPercentage: 30,
+  printValue: 0,
+};
 
+const Forms = () => {
+  const [values, setValues] = useState<FormsFields>(defaultValues);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Carrega valores do localStorage apenas uma vez na inicialização
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        setValues(JSON.parse(stored));
-      } catch {}
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Valida se os dados parseados têm a estrutura correta
+        if (parsed && typeof parsed === "object") {
+          setValues({ ...defaultValues, ...parsed });
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao carregar dados do localStorage:", error);
+    } finally {
+      setIsInitialized(true);
     }
   }, []);
 
+  // Salva valores no localStorage apenas após a inicialização
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
-  }, [values]);
+    if (isInitialized) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+      } catch (error) {
+        console.error("Erro ao salvar dados no localStorage:", error);
+      }
+    }
+  }, [values, isInitialized]);
 
-  useEffect(() => {
+  // Calcula o valor da impressão usando useMemo para otimização
+  const calculatedValue = useMemo(() => {
     const {
       filamentCost,
       kWhCost,
@@ -69,39 +89,36 @@ const Forms = () => {
       profitPercentage,
     } = values;
 
-    // aplica desperdício só se o usuário quiser
+    // Aplica desperdício só se o usuário quiser
     const effectiveWeight = includeFilamentWaste
       ? printWeight * FILAMENT_WASTE_FACTOR
       : printWeight;
 
-    // custo de filamento (R$/g)
+    // Custo de filamento (R$/g)
     const weightCost = includeFilament
       ? (filamentCost / 1000) * effectiveWeight
       : 0;
 
-    // custo de energia (kW × h × R$/kWh)
+    // Custo de energia (kW × h × R$/kWh)
     const energyCost = includeEnergy
       ? PRINTER_POWER_KW * (printTime / 60) * kWhCost
       : 0;
 
-    // custo máquina + manutenção (R$/h × h)
+    // Custo máquina + manutenção (R$/h × h)
     const machineTimeCost = includeMachineCost
       ? machineCost * (printTime / 60)
       : 0;
 
     const priceWithoutProfit = weightCost + energyCost + machineTimeCost;
 
-    // lucro
+    // Lucro
     const profit = includeProfit
       ? priceWithoutProfit * (profitPercentage / 100)
       : 0;
 
     const total = priceWithoutProfit + profit;
 
-    setValues((prev) => ({
-      ...prev,
-      printValue: Number(total.toFixed(2)),
-    }));
+    return Number(total.toFixed(2));
   }, [
     values.filamentCost,
     values.printWeight,
@@ -116,8 +133,15 @@ const Forms = () => {
     values.includeProfit,
   ]);
 
+  // Atualiza o valor calculado
+  useEffect(() => {
+    setValues((prev) => ({
+      ...prev,
+      printValue: calculatedValue,
+    }));
+  }, [calculatedValue]);
+
   return (
-    // <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center">
     <div className="flex gap-4 max-md:flex-col">
       <LeftSide values={values} setValues={setValues} />
       <div className="col-span-full md:hidden w-full">
